@@ -3,7 +3,7 @@ package org.json;
 /**
  * Class for JSend Enum Status representation
  * Examples in Junit test package
- * @see http://labs.omniti.com/labs/jsend
+ * @see "http://labs.omniti.com/labs/jsend"
  * @author David Bayo
  *
  */

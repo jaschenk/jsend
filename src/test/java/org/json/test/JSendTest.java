@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JsonData;
 import org.json.JsonStruct;
 
@@ -36,7 +36,7 @@ public class JSendTest extends TestCase {
 	/**
 	 * Test for one key, one set of values in JSend representation.
 	 * Output {"status":"success","data":{"numbers":{"two":"2","one":"1","three":"3"}}}
-	 * @see http://labs.omniti.com/labs/jsend
+	 * @see "http://labs.omniti.com/labs/jsend"
 	 * @author David Bayo
 	 *
 	 */
@@ -58,14 +58,14 @@ public class JSendTest extends TestCase {
 		mapper.writeValue(out, struct);
 		System.out.println(out);
 		//Remove double quotes to see unescaped JSON
-		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers\":{\"two\":\"2\",\"one\":\"1\",\"three\":\"3\"}}}";
-		assertTrue(out.toString(JSendTest.ENCODING_UTF_8).equals(expectedJSON));
+		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers\":{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}}}";
+		assertEquals(expectedJSON, out.toString(JSendTest.ENCODING_UTF_8));
 	}
 	
 	/**
 	 * Test for one key, one array of set of values in JSend representation
 	 * Output {"status":"success","data":{"numbers_array":[{"two":"2","one":"1","three":"3"},{"two":"2","one":"1","three":"3"}]}}
-	 * @see http://labs.omniti.com/labs/jsend
+	 * @see "http://labs.omniti.com/labs/jsend"
 	 * @author David Bayo
 	 *
 	 */
@@ -92,7 +92,7 @@ public class JSendTest extends TestCase {
 		mapper.writeValue(out, struct);
 		System.out.println(out);
 		//Remove double quotes to see unescaped JSON
-		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers_array\":[{\"two\":\"2\",\"one\":\"1\",\"three\":\"3\"},{\"two\":\"2\",\"one\":\"1\",\"three\":\"3\"}]}}";
-		assertTrue(out.toString(JSendTest.ENCODING_UTF_8).equals(expectedJSON));
+		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers_array\":[{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"},{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}]}}";
+		assertEquals(expectedJSON, out.toString(JSendTest.ENCODING_UTF_8));
 	}
 }

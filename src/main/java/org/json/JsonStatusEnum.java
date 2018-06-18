@@ -1,11 +1,12 @@
 package org.json;
 
-import org.codehaus.jackson.annotate.JsonValue;
+
+import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Enum for JSend Status representation
  * Examples in Junit test package
- * @see http://labs.omniti.com/labs/jsend
+ * @see "http://labs.omniti.com/labs/jsend"
  * @author David Bayo
  *
  */

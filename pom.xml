@@ -4,8 +4,8 @@
 	<groupId>org.json</groupId>
 	<artifactId>jsend</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0</version>
-	<name>java jsend wrapper and serializer</name>
+	<version>1.1.0</version>
+	<name>Java Jsend Wrapper and Serializer</name>
 
 	<dependencies>
 		<dependency>
@@ -16,11 +16,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.jboss.resteasy</groupId>
-			<artifactId>resteasy-jackson-provider</artifactId>
-			<version>1.1.GA</version>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.9.6</version>
 			<scope>compile</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>

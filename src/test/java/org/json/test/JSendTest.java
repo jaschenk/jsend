@@ -2,37 +2,19 @@ package org.json.test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
-import org.json.JsonData;
+import org.json.JsonContent;
 import org.json.JsonStruct;
+import org.junit.Test;
 
-public class JSendTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+
+public class JSendTest {
 	private static final String ENCODING_UTF_8 = "UTF-8";
 
-	/**
-	 * Create the test case
-	 *
-	 * @param testName name of the test case
-	 */
-	public JSendTest(String testName) {
-		super(testName);
-	}
-	
-	public static Test suite() {
-		return new TestSuite(JSendTest.class);
-	}
-	
 	/**
 	 * Test for one key, one set of values in JSend representation.
 	 * Output {"status":"success","data":{"numbers":{"two":"2","one":"1","three":"3"}}}
@@ -40,25 +22,26 @@ public class JSendTest extends TestCase {
 	 * @author David Bayo
 	 *
 	 */
-	public void testSuccessOneItem() throws JsonGenerationException, JsonMappingException, IOException {
+	@Test
+	public void testSuccessOneItem() throws IOException {
 		System.out.println("testSuccessOneItem");
 		JsonStruct struct = new JsonStruct();
-		JsonData data = new JsonData();
-		Map<String, String> oneRowMultipleValue = new HashMap<String, String>();
+		JsonContent content = new JsonContent();
+		Map<String, String> oneRowMultipleValue = new HashMap<>();
 		oneRowMultipleValue.put("one", "1");
 		oneRowMultipleValue.put("two", "2");
 		oneRowMultipleValue.put("three", "3");
 		
-		data.put("numbers", oneRowMultipleValue);
+		content.put("numbers", oneRowMultipleValue);
 		struct.setStatusToSuccess();
-		struct.setData(data);
+		struct.setContent(content);
 		ObjectMapper mapper = new ObjectMapper();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		// convert user object to json string
 		mapper.writeValue(out, struct);
 		System.out.println(out);
 		//Remove double quotes to see unescaped JSON
-		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers\":{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}}}";
+		String expectedJSON = "{\"status\":\"success\",\"content\":{\"numbers\":{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}}}";
 		assertEquals(expectedJSON, out.toString(JSendTest.ENCODING_UTF_8));
 	}
 	
@@ -69,22 +52,23 @@ public class JSendTest extends TestCase {
 	 * @author David Bayo
 	 *
 	 */
-	public void testSuccessItemArray() throws JsonGenerationException, JsonMappingException, IOException {
+	@Test
+	public void testSuccessItemArray() throws IOException {
 		System.out.println("testSuccessItemArray");
 		JsonStruct struct = new JsonStruct();
-		JsonData data = new JsonData();
-		Map<String, String> oneRowMultipleValue = new HashMap<String, String>();
+		JsonContent content = new JsonContent();
+		Map<String, String> oneRowMultipleValue = new HashMap<>();
 		oneRowMultipleValue.put("one", "1");
 		oneRowMultipleValue.put("two", "2");
 		oneRowMultipleValue.put("three", "3");
 		
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		List<Map<String, String>> list = new ArrayList<>();
 		list.add(oneRowMultipleValue);
 		list.add(oneRowMultipleValue);
 		
-		data.put("numbers_array", list);
+		content.put("numbers_array", list);
 		struct.setStatusToSuccess();
-		struct.setData(data);
+		struct.setContent(content);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -92,7 +76,34 @@ public class JSendTest extends TestCase {
 		mapper.writeValue(out, struct);
 		System.out.println(out);
 		//Remove double quotes to see unescaped JSON
-		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers_array\":[{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"},{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}]}}";
+		String expectedJSON = "{\"status\":\"success\",\"content\":{\"numbers_array\":[{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"},{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}]}}";
 		assertEquals(expectedJSON, out.toString(JSendTest.ENCODING_UTF_8));
 	}
+
+	@Test
+	public void testAdditionalFields() throws IOException {
+		System.out.println("testAdditionalFields");
+		JsonStruct struct = new JsonStruct();
+		struct.setAuditId(UUID.randomUUID().toString());
+		struct.setRequestTime(new Date());
+
+		JsonContent content = new JsonContent();
+		Map<String, String> oneRowMultipleValue = new HashMap<>();
+		oneRowMultipleValue.put("one", "1");
+		oneRowMultipleValue.put("two", "2");
+		oneRowMultipleValue.put("three", "3");
+
+		List<Map<String, String>> list = new ArrayList<>();
+		list.add(oneRowMultipleValue);
+
+		content.put("foobar", list);
+		struct.setStatusToFail();
+		struct.setContent(content);
+
+		ObjectMapper mapper = new ObjectMapper();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		// convert user object to json string
+		mapper.writeValue(out, struct);
+		System.out.println(out);
+    }
 }

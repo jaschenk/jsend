@@ -1,32 +1,31 @@
 package org.json;
 
+
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
- * Class for JSend Enum Status representation
+ * Enum for JSend Status representation
  * Examples in Junit test package
  * @see "http://labs.omniti.com/labs/jsend"
  * @author David Bayo
  *
  */
-public class JsonStatus {
-	private JsonStatusEnum status;
+public enum JsonStatus {
 
-	public JsonStatusEnum getStatus() {
-		return status;
-	}
+	SUCCESS("success"), FAIL("fail"), ERROR("error");
+	private final String status;
 
-	public void setStatus(JsonStatusEnum status) {
+	JsonStatus(final String status) {
 		this.status = status;
 	}
-	
-	public void setStatusToSuccess() {
-		this.status = JsonStatusEnum.SUCCESS;
+
+	public String getStatus() {
+		return this.status;
 	}
 	
-	public void setStatusToFail() {
-		this.status = JsonStatusEnum.FAIL;
-	}
-	
-	public void setStatusToError() {
-		this.status = JsonStatusEnum.ERROR;
+	@JsonValue
+	@Override
+	public String toString() {
+		return this.status.toLowerCase();
 	}
 }

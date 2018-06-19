@@ -1,6 +1,7 @@
 package org.json;
 
-import java.util.HashMap;
+import com.fasterxml.jackson.annotation.*;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -11,14 +12,16 @@ import java.util.Map;
  * @see "http://labs.omniti.com/labs/jsend"
  * @author David Bayo
  *
- * Modified to preserve order as keys add to Root Map.
+ * Modified to preserve order as keys add to Root Map, refactored to JsonContent
  * @author schenkje
  *
  */
-public class JsonData {
-	
-	private Map<String, Object> keysValuesMap = new LinkedHashMap<String, Object>();
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class JsonContent {
 
+	@JsonProperty("content")
+	private Map<String, Object> keysValuesMap = new LinkedHashMap<>();
+	
 	public Map<String, Object> getKeysValuesMap() {
 		return keysValuesMap;
 	}

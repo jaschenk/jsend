@@ -7,11 +7,18 @@
 	<version>1.1.0</version>
 	<name>Java Jsend Wrapper and Serializer</name>
 
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven-compiler.version>1.8</maven-compiler.version>
+		<maven-target.version>1.8</maven-target.version>
+	</properties>
+
 	<dependencies>
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<version>4.12</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -21,7 +28,7 @@
 			<version>2.9.6</version>
 			<scope>compile</scope>
 		</dependency>
-
+        
 	</dependencies>
 
 	<build>
@@ -29,18 +36,19 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
 				<configuration>
-					<source />
-					<target />
 					<encoding>utf-8</encoding>
+                    <source>${maven-compiler.version}</source>
+                    <target>${maven-target.version}</target>
 				</configuration>
 			</plugin>
 			<!-- Testing options -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.22.0</version>
 				<configuration>
-					<forkMode>pertest</forkMode>
 					<argLine>-Xms128m -Xmx384m</argLine>
 					<testFailureIgnore>false</testFailureIgnore>
 					<skip>false</skip>

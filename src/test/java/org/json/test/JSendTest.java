@@ -11,6 +11,7 @@ import org.json.JsonStruct;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class JSendTest {
 	private static final String ENCODING_UTF_8 = "UTF-8";
@@ -78,6 +79,34 @@ public class JSendTest {
 		//Remove double quotes to see unescaped JSON
 		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers_array\":[{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"},{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}]}}";
 		assertEquals(expectedJSON, out.toString(JSendTest.ENCODING_UTF_8));
+	}
+
+	@Test
+	public void testErrorCondition() throws IOException {
+		System.out.println("testErrorCondition");
+
+		String auditId = UUID.randomUUID().toString();
+
+		JsonStruct struct = new JsonStruct();
+		struct.setAuditId(auditId);
+		struct.setRequestTime(new Date());
+		struct.setConditionCode("Invalid Condition Raised");
+		struct.setStatusToError();
+		struct.setResponseTime(new Date());
+		struct.addMessage("Exception Condition has been Raised");
+		struct.setRequestURI("/some/end/point");
+		struct.setVersion("v1");
+
+		ObjectMapper mapper = new ObjectMapper();
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		// convert user object to json string
+		mapper.writeValue(out, struct);
+
+		String jsonResult = out.toString(ENCODING_UTF_8);
+		assertTrue(jsonResult.startsWith("{\"auditId\":\""+auditId+"\","));
+		assertTrue(jsonResult.endsWith(",\"version\":\"v1\",\"status\":\"error\",\"messages\":[\"Exception Condition has been Raised\"],\"conditionCode\":\"Invalid Condition Raised\",\"requestURI\":\"/some/end/point\"}"));
+
+		System.out.println(out);
 	}
 
 	@Test

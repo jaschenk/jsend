@@ -12,14 +12,14 @@ import java.util.Map;
  * @see "http://labs.omniti.com/labs/jsend"
  * @author David Bayo
  *
- * Modified to preserve order as keys add to Root Map, refactored to JsonContent
+ * Modified to preserve order as keys add to Root Map
  * @author schenkje
  *
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class JsonContent {
+public class JsonData {
 
-	@JsonProperty("content")
+	@JsonProperty("data")
 	private Map<String, Object> keysValuesMap = new LinkedHashMap<>();
 	
 	public Map<String, Object> getKeysValuesMap() {

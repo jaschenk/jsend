@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Class for creating JSend structure
- * Instantiate this class, set one of the different status and set content created with JsonContent class
+ * Instantiate this class, set one of the different status and set data created with JsonData class
  * Examples in Junit test package
  * @see "http://labs.omniti.com/labs/jsend"
  * @author David Bayo
@@ -21,7 +21,7 @@ import java.util.List;
  *
  */
 @JsonPropertyOrder({ "auditId", "requestTime", "responseTime", "requestURL", "serviceName", "version",
-		"status", "messages", "errorConditionCode", "content"})
+		"status", "messages", "conditionCode", "data"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class JsonStruct implements Serializable {
 	/**
@@ -60,13 +60,13 @@ public class JsonStruct implements Serializable {
 	 */
 	private List<String> messages = null;
 	/**
-	 * Error Condition Code
+	 * Condition Code
 	 */
-	private String errorConditionCode = null;
+	private String conditionCode = null;
 	/**
 	 * Json Data Content of Response, if Applicable.
 	 */
-	private JsonContent content;
+	private JsonData data;
 
 	/**
 	 * Helper Method to Set Status to Success
@@ -259,31 +259,31 @@ public class JsonStruct implements Serializable {
 	 * Optional Error Condition Code
 	 * @return String containing additional Error Information
 	 */
-	public String getErrorConditionCode() {
-		return errorConditionCode;
+	public String getConditionCode() {
+		return conditionCode;
 	}
 	/**
 	 * Optional Error Condition Code
-	 * @param errorConditionCode  String containing additional Error Information
+	 * @param conditionCode  String containing additional Error Information
 	 */
-	public void setErrorConditionCode(String errorConditionCode) {
-		this.errorConditionCode = errorConditionCode;
+	public void setConditionCode(String conditionCode) {
+		this.conditionCode = conditionCode;
 	}
 
 	/**
 	 * Content of Request
-	 * @return JsonContent Reference
+	 * @return JsonData Reference
 	 */
 	@JsonUnwrapped
-	public JsonContent getContent() {
-		return content;
+	public JsonData getData() {
+		return data;
 	}
 
 	/**
 	 * Set Content as applicable
-	 * @param content reference to be established
+	 * @param data reference to be established
 	 */
-	public void setContent(JsonContent content) {
-		this.content = content;
+	public void setData(JsonData data) {
+		this.data = data;
 	}
 }

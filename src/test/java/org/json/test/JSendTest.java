@@ -6,7 +6,7 @@ import java.util.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.json.JsonContent;
+import org.json.JsonData;
 import org.json.JsonStruct;
 import org.junit.Test;
 
@@ -26,22 +26,22 @@ public class JSendTest {
 	public void testSuccessOneItem() throws IOException {
 		System.out.println("testSuccessOneItem");
 		JsonStruct struct = new JsonStruct();
-		JsonContent content = new JsonContent();
-		Map<String, String> oneRowMultipleValue = new HashMap<>();
-		oneRowMultipleValue.put("one", "1");
+		JsonData data = new JsonData();
+		Map<String, String> oneRowMultipleValue = new LinkedHashMap<>();
 		oneRowMultipleValue.put("two", "2");
+		oneRowMultipleValue.put("one", "1");
 		oneRowMultipleValue.put("three", "3");
-		
-		content.put("numbers", oneRowMultipleValue);
+
+		data.put("numbers", oneRowMultipleValue);
 		struct.setStatusToSuccess();
-		struct.setContent(content);
+		struct.setData(data);
 		ObjectMapper mapper = new ObjectMapper();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		// convert user object to json string
 		mapper.writeValue(out, struct);
 		System.out.println(out);
 		//Remove double quotes to see unescaped JSON
-		String expectedJSON = "{\"status\":\"success\",\"content\":{\"numbers\":{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}}}";
+		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers\":{\"two\":\"2\",\"one\":\"1\",\"three\":\"3\"}}}";
 		assertEquals(expectedJSON, out.toString(JSendTest.ENCODING_UTF_8));
 	}
 	
@@ -56,8 +56,8 @@ public class JSendTest {
 	public void testSuccessItemArray() throws IOException {
 		System.out.println("testSuccessItemArray");
 		JsonStruct struct = new JsonStruct();
-		JsonContent content = new JsonContent();
-		Map<String, String> oneRowMultipleValue = new HashMap<>();
+		JsonData data = new JsonData();
+		Map<String, String> oneRowMultipleValue = new LinkedHashMap<>();
 		oneRowMultipleValue.put("one", "1");
 		oneRowMultipleValue.put("two", "2");
 		oneRowMultipleValue.put("three", "3");
@@ -65,10 +65,10 @@ public class JSendTest {
 		List<Map<String, String>> list = new ArrayList<>();
 		list.add(oneRowMultipleValue);
 		list.add(oneRowMultipleValue);
-		
-		content.put("numbers_array", list);
+
+		data.put("numbers_array", list);
 		struct.setStatusToSuccess();
-		struct.setContent(content);
+		struct.setData(data);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -76,7 +76,7 @@ public class JSendTest {
 		mapper.writeValue(out, struct);
 		System.out.println(out);
 		//Remove double quotes to see unescaped JSON
-		String expectedJSON = "{\"status\":\"success\",\"content\":{\"numbers_array\":[{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"},{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}]}}";
+		String expectedJSON = "{\"status\":\"success\",\"data\":{\"numbers_array\":[{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"},{\"one\":\"1\",\"two\":\"2\",\"three\":\"3\"}]}}";
 		assertEquals(expectedJSON, out.toString(JSendTest.ENCODING_UTF_8));
 	}
 
@@ -86,9 +86,10 @@ public class JSendTest {
 		JsonStruct struct = new JsonStruct();
 		struct.setAuditId(UUID.randomUUID().toString());
 		struct.setRequestTime(new Date());
+		struct.setConditionCode("something");
 
-		JsonContent content = new JsonContent();
-		Map<String, String> oneRowMultipleValue = new HashMap<>();
+		JsonData data = new JsonData();
+		Map<String, String> oneRowMultipleValue = new LinkedHashMap<>();
 		oneRowMultipleValue.put("one", "1");
 		oneRowMultipleValue.put("two", "2");
 		oneRowMultipleValue.put("three", "3");
@@ -96,9 +97,9 @@ public class JSendTest {
 		List<Map<String, String>> list = new ArrayList<>();
 		list.add(oneRowMultipleValue);
 
-		content.put("foobar", list);
+		data.put("foobar", list);
 		struct.setStatusToFail();
-		struct.setContent(content);
+		struct.setData(data);
 
 		ObjectMapper mapper = new ObjectMapper();
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
